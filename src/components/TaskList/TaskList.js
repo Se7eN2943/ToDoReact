@@ -1,23 +1,31 @@
 import React from 'react';
-import ToDoListItem from '../Task/Task';
+import Task from '../Task/Task'
+import NewTaskForm from '../NewTaskForm/NewTaskForm'
 
-let TaskList = ({ todos }) => {
+const TaskList = () => {
 
-    const elements = todos.map(item => {
-        const{id, ...itemProps} = item
-        return (
-            <li key={id}>
-                <ToDoListItem {...itemProps} />
-            </li>
-        )
-    })
+    // const elements = todos.map(item => {
+    //     const { id, ...itemProps } = item
+    //     return (
+    //         <li key={id}>
+    //             <ToDoListItem {...itemProps} />
+    //         </li>
+    //     )
+    // })
 
 
     return (
-        <ul>
-            {elements}
-        </ul>
+        <section class="main">
+            <ul class="todo-list">
+                <Task />
+                <NewTaskForm />
+                <Task />
+            </ul>
+        </section>
     )
 }
 
 export default TaskList
+
+
+
