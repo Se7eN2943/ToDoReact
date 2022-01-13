@@ -1,17 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+// import React from 'react';
+// import ReactDOM from 'react-dom';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+// import AppHeader from './/components/AppHeader'
+// import SearchPanel from './/components/SearchPanel'
+// import TodoList from './/components/ToDoList'
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+
+
+// let body = document.querySelector('#root');
+
+// const App = () => {
+//     const todoData = [
+//         { label: 'Первое дело', importent: false, id: 1 },
+//         { label: 'Второе дело', importent: true, id: 2 },
+//         { label: 'Третье дело', importent: false, id: 3 },
+//     ]
+//     return (
+//         <div>
+//             <AppHeader />
+//             <SearchPanel />
+//             <TodoList todos={todoData} />
+//         </div>
+//     )
+// }
+
+// ReactDOM.render(<App />, body)
