@@ -1,24 +1,31 @@
-import React from 'react';
+import React, {Component} from 'react';
 
 
-const Footer = () => {
-    return (
-        <footer class="footer">
-            <span class="todo-count">1 items left</span>
-            <ul class="filters">
-                <li>
-                    <button class="selected">All</button>
-                </li>
-                <li>
-                    <button>Active</button>
-                </li>
-                <li>
-                    <button>Completed</button>
-                </li>
-            </ul>
-            <button class="clear-completed">Clear completed</button>
-        </footer>
-    )
+
+export default class Footer extends Component {
+
+    render() {
+        
+        const{dataLength} = this.props
+        return (
+            <footer className="footer">
+                <span className="todo-count">{dataLength} items left</span>
+                <ul className="filters">
+                    <li>
+                        <button className="selected">All</button>
+                    </li>
+                    <li>
+                        <button>Active</button>
+                    </li>
+                    <li>
+                        <button>Completed</button>
+                    </li>
+                </ul>
+                <button className="clear-completed">Clear completed</button>
+            </footer>
+        )
+
+    }
 }
 
-export default Footer
+

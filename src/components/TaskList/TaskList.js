@@ -1,31 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Task from '../Task/Task'
-import NewTaskForm from '../NewTaskForm/NewTaskForm'
-
-const TaskList = () => {
-
-    // const elements = todos.map(item => {
-    //     const { id, ...itemProps } = item
-    //     return (
-    //         <li key={id}>
-    //             <ToDoListItem {...itemProps} />
-    //         </li>
-    //     )
-    // })
 
 
-    return (
-        <section class="main">
-            <ul class="todo-list">
-                <Task />
-                <NewTaskForm />
-                <Task />
-            </ul>
-        </section>
-    )
+
+export default class TaskList extends Component {
+
+    render() {
+        const { tododata, onDelTasks } = this.props
+        const elements = tododata.map(item => <Task onDelTasks={() => onDelTasks(item.id)} key={item.id} {...item} />)
+
+
+        return (
+            <section className="main">
+                <ul className="todo-list">
+                    {elements}
+                </ul>
+            </section>
+        )
+    }
+
 }
 
-export default TaskList
+
 
 
 

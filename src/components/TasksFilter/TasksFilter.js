@@ -5,9 +5,9 @@ const AppHeader = () => <h1>ToDoes</h1>
 const TasksFilter = () => {
     return (
         <div>
-            <header class="header">
+            <header className="header">
                 <AppHeader />
-                <input class="new-todo" placeholder="What needs to be done?" autofocus />
+                <input className="new-todo" placeholder="What needs to be done?" autoFocus />
             </header>
         </div>
     )
