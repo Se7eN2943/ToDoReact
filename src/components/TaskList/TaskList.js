@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
-import Task from '../Task/Task'
+import React from 'react';
+import Task from '../Task/Task.js'
 
 
 
-export default class TaskList extends Component {
+const TaskList = function TaskList(props){
+    console.log(props)
 
-    render() {
-        const { tododata, onDelTasks } = this.props
-        const elements = tododata.map(item => <Task onDelTasks={() => onDelTasks(item.id)} key={item.id} {...item} />)
-
-
+        const { tododata, onDelTasks, onChecked } = props
+        
+        const elements = tododata.map(item => <Task onChecked={() => onChecked(item.id)} onDelTasks={() => onDelTasks(item.id)} key={item.id} {...item} />)
         return (
             <section className="main">
                 <ul className="todo-list">
@@ -17,11 +16,10 @@ export default class TaskList extends Component {
                 </ul>
             </section>
         )
-    }
 
 }
 
-
+export default TaskList
 
 
 

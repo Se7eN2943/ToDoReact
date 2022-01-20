@@ -1,31 +1,17 @@
-import React, {Component} from 'react';
-
-
+import React, { Component } from 'react';
+import TasksFilter from '../TasksFilter/TasksFilter.js'
 
 export default class Footer extends Component {
 
     render() {
-        
-        const{dataLength} = this.props
+        const { dataLength, todoFilter, clearComplite } = this.props
         return (
-            <footer className="footer">
+            < footer className="footer" >
                 <span className="todo-count">{dataLength} items left</span>
-                <ul className="filters">
-                    <li>
-                        <button className="selected">All</button>
-                    </li>
-                    <li>
-                        <button>Active</button>
-                    </li>
-                    <li>
-                        <button>Completed</button>
-                    </li>
-                </ul>
-                <button className="clear-completed">Clear completed</button>
+                <TasksFilter todoFilter={todoFilter} />
+                <button onClick={() => clearComplite()} className="clear-completed">Clear completed</button>
             </footer>
         )
-
     }
 }
-
 

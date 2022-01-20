@@ -1,18 +1,26 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const AppHeader = () => <h1>ToDoes</h1>
 
-const TasksFilter = () => {
-    return (
-        <div>
-            <header className="header">
-                <AppHeader />
-                <input className="new-todo" placeholder="What needs to be done?" autoFocus />
-            </header>
-        </div>
-    )
+
+
+
+export default class TasksFilter extends Component {
+
+    render() {
+        const{todoFilter} = this.props;
+        return (
+            <ul className="filters">
+                <li>
+                    <button onClick={() => todoFilter('All')} className="selected">All</button>
+                </li>
+                <li>
+                    <button onClick={() => todoFilter(false)} >Active</button>
+                </li>
+                <li>
+                    <button onClick={() => todoFilter(true)} >Completed</button>
+                </li>
+            </ul>
+        )
+    }
 }
-
-export default TasksFilter
-
 
