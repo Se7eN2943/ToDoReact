@@ -1,87 +1,68 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import NewTaskForm from './/components/NewTaskForm/NewTaskForm'
-import TaskList from './/components/TaskList/TaskList'
-import Footer from './/components/Footer/Footer'
+import NewTaskForm from './components/NewTaskForm/NewTaskForm';
+import TaskList from './components/TaskList/TaskList';
+import Footer from './components/Footer/Footer';
 
 
 
 let todoapp = document.querySelector('.todoapp');
 
-const data = [
+let data = [
     { label: 'Drink coffe', id: 1, checked: false, },
     { label: 'Create react app', id: 2, checked: false, },
     { label: 'Rejoice', id: 3, checked: false, },
 ]
 
 export default class App extends Component {
-    
-    state = {
-        todoData:[]
-    }
+    state = {todoData:data};
 
     clearComplite = () => {
-        this.setState(state => {
-            let newStateArr = this.state.todoData.filter(item => item.checked === false)
-            return { todoData: newStateArr }
-        })
+        data = this.state.todoData.filter(item => item.checked === false)
+        return this.setState({ todoData: data })
     };
 
-
     todoFilter = (status = 'All') => {
-        console.log(this.state)
-        if (status === "All") this.setState({ todoData: data })
-        console.log(this.state)
-        this.setState(state => {
-            let newStateArr = data.filter(item => item.checked === status)
-                
-                return ({ todoData: newStateArr }, this.state)
-        })
-                
-                
-                
-    }
+        if (status === "All") return this.setState({ todoData: data })
+        return this.setState({todoData: data.filter(item => item.checked === status)})
+    };
 
-    onChecked = id => this.setState(state => {
-        let newStateArr = state.todoData.map(item => {
+    onChecked = id => {
+        data = this.state.todoData.map(item => {
             if (item.id === id) item.checked = !item.checked
             return item
         })
-        return { todoData: newStateArr }
-    })
+        return this.setState({ todoData: data })
+    };     
 
     onDelTasks = id => {
-        this.setState(state => {
-            let newStateArr = state.todoData.filter(item => item.id !== id)
-            return { todoData: newStateArr }
-        })
-    }
+            data = this.state.todoData.filter(item => item.id !== id)
+            return this.setState({ todoData: data })
+    };
 
-    onAdd = value => this.setState(state => {
+    onAdd = value => {
         let newTask = {
             label: value,
             id: Math.random(),
             checked: false
         }
-        let newStateArr = state.todoData
-        newStateArr.unshift(newTask)
-        return { todoData: newStateArr }
-    })
+        data.unshift(newTask)
+        return this.setState({ todoData: data }) 
+    };
 
     render() {
-        console.log(this.state)
         return (
             <div>
                 <NewTaskForm onAdd={this.onAdd} />
                 <TaskList
-                    tododata={this.todoFilter()}
+                    tododata={this.state.todoData}
                     onDelTasks={id => this.onDelTasks(id)}
                     onChecked={this.onChecked} />
                 <Footer clearComplite={this.clearComplite} todoFilter={this.todoFilter} dataLength={this.state.todoData.length} />
             </div>
         )
-    }
-}
+    };
+};
 
 ReactDOM.render(<App />, todoapp)

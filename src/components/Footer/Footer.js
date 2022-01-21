@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import TasksFilter from '../TasksFilter/TasksFilter.js'
+import TasksFilter from '../TasksFilter/TasksFilter';
 
 export default class Footer extends Component {
-
     render() {
         const { dataLength, todoFilter, clearComplite } = this.props
         return (
@@ -12,6 +11,6 @@ export default class Footer extends Component {
                 <button onClick={() => clearComplite()} className="clear-completed">Clear completed</button>
             </footer>
         )
-    }
-}
+    };
+};
 
