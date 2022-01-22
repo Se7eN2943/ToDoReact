@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-
-
 const AppHeader = () => <h1>ToDoes</h1>
 export default class NewTaskForm extends Component {
 

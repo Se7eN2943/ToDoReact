@@ -3,16 +3,21 @@
         "airbnb",
         "airbnb/hooks",
         "eslint-config-prettier",
-        "prettier"
+        "plugin:prettier/recommended"
     ],
     "plugins": ["react"],
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "requireConfigFile": false,
+        "babelOptions": {
+            "presets": ["@babel/preset-react"]
+        }
+    },
     "env": {
         "browser": true,
         "jest": true
     },
     "rules": {
-        "no-restricted-imports": ["error", "import1", "import2"],
         "curly": ["error"],
         "max-depth": ["warn", 4],
         "id-length": ["warn", {
@@ -24,6 +29,10 @@
             "allowForLoopAfterthoughts": true
         }],
         "no-restricted-syntax": "off",
+        "prefer-destructuring": "off",
+        "react/destructuring-assignment": "off",
+        "react/no-unused-class-component-methods": "off",
+        "no-return-assign": "off",
         "class-methods-use-this": "off",
         "jsx-a11y/href-no-hash": ["off"],
         "jsx-a11y/anchor-is-valid": ["off"],
@@ -32,7 +41,11 @@
         }],
         "react/state-in-constructor": ["off"],
         "react/jsx-props-no-spreading": ["off"],
-        "react/static-property-placement": "off"
+        "react/static-property-placement": "off",
+        "react/jsx-filename-extension": [1, {
+            "extensions": [".js", ".jsx"]
+        }],
+        "jsx-a11y/no-autofocus": "off"
     },
     "settings": {
         "react": {
@@ -41,4 +54,3 @@
         }
     }
 }
-

@@ -10,13 +10,13 @@ import Footer from './components/Footer/Footer';
 let todoapp = document.querySelector('.todoapp');
 
 let data = [
-    { label: 'Drink coffe', id: 1, checked: false, },
-    { label: 'Create react app', id: 2, checked: false, },
-    { label: 'Rejoice', id: 3, checked: false, },
+    { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date() },
+    { label: 'Create react app', id: 2, checked: false, timestamp: new Date() },
+    { label: 'Rejoice', id: 3, checked: false, timestamp: new Date() },
 ]
 
 export default class App extends Component {
-    state = {todoData:data};
+    state = { todoData: data };
 
     clearComplite = () => {
         data = this.state.todoData.filter(item => item.checked === false)
@@ -25,7 +25,7 @@ export default class App extends Component {
 
     todoFilter = (status = 'All') => {
         if (status === "All") return this.setState({ todoData: data })
-        return this.setState({todoData: data.filter(item => item.checked === status)})
+        return this.setState({ todoData: data.filter(item => item.checked === status) })
     };
 
     onChecked = id => {
@@ -34,21 +34,22 @@ export default class App extends Component {
             return item
         })
         return this.setState({ todoData: data })
-    };     
+    };
 
     onDelTasks = id => {
-            data = this.state.todoData.filter(item => item.id !== id)
-            return this.setState({ todoData: data })
+        data = this.state.todoData.filter(item => item.id !== id)
+        return this.setState({ todoData: data })
     };
 
     onAdd = value => {
         let newTask = {
             label: value,
             id: Math.random(),
-            checked: false
+            checked: false,
+            timestamp: new Date()
         }
         data.unshift(newTask)
-        return this.setState({ todoData: data }) 
+        return this.setState({ todoData: data })
     };
 
     render() {
