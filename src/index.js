@@ -26,11 +26,13 @@ export default class App extends Component {
   };
 
   onChecked = (id) => {
-    data = this.state.todoData.map((item) => {
-      if (item.id === id) item.checked = !item.checked;
-      return item;
+    this.setState({
+      todoData: this.state.todoData.map((item) => {
+        if (item.id === id) item.checked = !item.checked;
+        return item;
+      })
     });
-    return this.setState({ todoData: data });
+
   };
 
   onDelTasks = (id) => {

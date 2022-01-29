@@ -52,7 +52,7 @@ export default class Task extends Component {
     return (
       <li className={checkClass}>
         <div className="view">
-          <input id={id} className="toggle" type="checkbox" onClick={onChecked} />
+          <input id={id} className="toggle" type="checkbox" onChange={onChecked} checked = {checked}/>
           <label htmlFor={id}>
             <span className="description">{label}</span>
             <span className="created">created {this.state.timestamp} ago</span>
