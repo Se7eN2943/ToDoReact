@@ -3,62 +3,34 @@ import PropTypes from 'prop-types';
 
 export default class TasksFilter extends Component {
   static defaultProps = {
-    todoFilter: () => {},
+    toggle: () => { },
   };
 
   static propTypes = {
-    todoFilter: PropTypes.func,
+    toggle: PropTypes.func,
+    
   };
-
-  state = {
-    classNameAll: 'selected',
-    classNameActiv: ' ',
-    classNameCompleted: ' ',
-  };
-
-  toggle(value, name) {
-    this.props.todoFilter(value);
-    if (name === 'Active') {
-      return this.setState({
-        classNameAll: ' ',
-        classNameActiv: 'selected',
-        classNameCompleted: ' ',
-      });
-    }
-    if (name === 'All') {
-      return this.setState({
-        classNameAll: 'selected',
-        classNameActiv: ' ',
-        classNameCompleted: ' ',
-      });
-    }
-    if (name === 'Completed') {
-      return this.setState({
-        classNameAll: ' ',
-        classNameActiv: ' ',
-        classNameCompleted: 'selected',
-      });
-    }
-  }
 
   render() {
+    const { toggle } = this.props
+    const { classNameAll, classNameActiv, classNameCompleted } = this.props.togleClasses
     return (
       <ul className="filters">
         <li>
-          <button type="button" onClick={() => this.toggle('All', 'All')} className={this.state.classNameAll}>
+          <button type="button" onClick={() => toggle('All', 'All')} className={classNameAll}>
             All
           </button>
         </li>
         <li>
-          <button type="button" onClick={() => this.toggle(false, 'Active')} className={this.state.classNameActiv}>
+          <button type="button" onClick={() => toggle(false, 'Active')} className={classNameActiv}>
             Active
           </button>
         </li>
         <li>
           <button
             type="button"
-            onClick={() => this.toggle(true, 'Completed')}
-            className={this.state.classNameCompleted}
+            onClick={() => toggle(true, 'Completed')}
+            className={classNameCompleted}
           >
             Completed
           </button>
