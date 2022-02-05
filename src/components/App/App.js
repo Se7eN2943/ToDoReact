@@ -83,6 +83,7 @@ export default class App extends Component {
             label: value,
             minutes: min,
             seconds: sec,
+            timerPlay: false,
             id: Math.random(),
             checked: false,
             timestamp: new Date(),

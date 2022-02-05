@@ -16,8 +16,12 @@ export default class Task extends Component {
     timestamp: new Date(),
     onChecked: () => { },
     onDelTasks: () => { },
+    timeOnData: () => { },
     label: '',
     id: Math.random(),
+    minutes: 0,
+    seconds: 0,
+    timerPlay: false,
   };
 
   static propTypes = {
@@ -25,8 +29,12 @@ export default class Task extends Component {
     timestamp: PropTypes.object,
     onChecked: PropTypes.func,
     onDelTasks: PropTypes.func,
+    timeOnData: PropTypes.func,
     label: PropTypes.string,
     id: PropTypes.number,
+    minutes: PropTypes.number,
+    minutes: PropTypes.number,
+    timerPlay: PropTypes.bool,
   };
 
   componentDidMount = async () => {
