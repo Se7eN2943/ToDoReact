@@ -4,9 +4,9 @@ import TaskList from '../TaskList/TaskList';
 import Footer from '../Footer/Footer';
 
 let data = [
-    { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date() },
-    { label: 'Create react app', id: 2, checked: false, timestamp: new Date() },
-    { label: 'Rejoice', id: 3, checked: false, timestamp: new Date() },
+    { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date(), minutes: 9, seconds: 59, timerPlay: false },
+    { label: 'Create react app', id: 2, checked: false, timestamp: new Date(), minutes: 0, seconds: 2, timerPlay: false },
+    { label: 'Rejoice', id: 3, checked: false, timestamp: new Date(), minutes: 0, seconds: 20, timerPlay: false }
 ];
 
 export default class App extends Component {
@@ -53,6 +53,17 @@ export default class App extends Component {
         return this.setState({ todoData: data.filter((item) => item.checked === status) });
     };
 
+    timeOnData = (minutes, seconds, id, timerPlay) => {
+        data = data.map(item => {
+            if (item.id === id) {
+                item.minutes = minutes
+                item.seconds = seconds
+                item.timerPlay = timerPlay
+            }
+            return item
+        })
+    }
+
     onChecked = (id) => {
         this.setState({
             todoData: this.state.todoData.map((item) => {
@@ -60,7 +71,6 @@ export default class App extends Component {
                 return item;
             })
         });
-
     };
 
     onDelTasks = (id) => {
@@ -68,9 +78,11 @@ export default class App extends Component {
         return this.setState({ todoData: data });
     };
 
-    onAdd = (value) => {
+    onAdd = (value, min, sec) => {
         const newTask = {
             label: value,
+            minutes: min,
+            seconds: sec,
             id: Math.random(),
             checked: false,
             timestamp: new Date(),
@@ -84,7 +96,7 @@ export default class App extends Component {
         return (
             <div>
                 <NewTaskForm onAdd={this.onAdd} />
-                <TaskList tododata={this.state.todoData} onDelTasks={(id) => this.onDelTasks(id)} onChecked={this.onChecked} />
+                <TaskList tododata={this.state.todoData} onDelTasks={(id) => this.onDelTasks(id)} timeOnData={this.timeOnData} onChecked={this.onChecked} />
                 <Footer
                     clearComplite={this.clearComplite}
                     dataLength={this.state.todoData.length}

@@ -6,7 +6,7 @@ function AppHeader() {
 }
 export default class NewTaskForm extends Component {
   static defaultProps = {
-    onAdd: () => {},
+    onAdd: () => { },
   };
 
   static propTypes = {
@@ -14,36 +14,62 @@ export default class NewTaskForm extends Component {
   };
 
   state = {
-    label: '',
+    label: '', minutes: '', seconds: ''
   };
 
   changeSub = (event) => {
-    this.setState({ label: event.target.value });
+    event.target.name === 'label' && this.setState({ label: event.target.value });
+    event.target.name === 'minutes' && this.setState({ minutes: event.target.value });
+    event.target.name === 'seconds' && this.setState({ seconds: event.target.value });
   };
 
   onSubmit = (event) => {
+    const { label, minutes, seconds } = this.state
     event.preventDefault();
-    this.props.onAdd(this.state.label);
-    this.setState({ label: '' });
+    this.props.onAdd(label, +minutes, +seconds);
+    this.setState({ label: '', minutes: '', seconds: '' });
   };
 
   render() {
+    const { label, minutes, seconds } = this.state
     return (
       <div>
         <header className="header">
           <AppHeader />
           <form onSubmit={this.onSubmit}>
             <input
-              value={this.state.label}
+              name='label'
+              value={label}
               type="text"
               onChange={this.changeSub}
               className="new-todo"
               placeholder="What needs to be done?"
               autoFocus
+              required
             />
+            <input
+              name='minutes'
+              type="number"
+              className="new-todo-form__timer"
+              placeholder="Min"
+              value={minutes}
+              onChange={this.changeSub}
+              autoFocus
+              min={0} />
+            <input
+              name='seconds'
+              type="number"
+              className="new-todo-form__timer"
+              placeholder="Sec"
+              value={seconds}
+              onChange={this.changeSub}
+              autoFocus
+              max={60}
+              min={0} />
+            <input id='submit' type="submit" />
           </form>
         </header>
-      </div>
+      </div >
     );
   }
 }

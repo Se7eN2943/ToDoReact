@@ -3,15 +3,19 @@ import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 
 export default class Task extends Component {
+
   state = {
-    timestamp: formatDistanceToNow(Date.now(), { addSuffis: true, includeSeconds: true }),
+    timestamp: formatDistanceToNow(Date.now(), { addSuffis: false, includeSeconds: false }),
+    minutes: 0,
+    seconds: 0,
+    timerPlay: false
   };
 
   static defaultProps = {
     checked: false,
     timestamp: new Date(),
-    onChecked: () => {},
-    onDelTasks: () => {},
+    onChecked: () => { },
+    onDelTasks: () => { },
     label: '',
     id: Math.random(),
   };
@@ -25,10 +29,12 @@ export default class Task extends Component {
     id: PropTypes.number,
   };
 
-  render() {
-    const { label, id, checked, timestamp, onDelTasks, onChecked } = this.props;
+  componentDidMount = async () => {
+    const { timestamp, minutes, seconds, timerPlay } = this.props;
+    await this.setState({ minutes: minutes, seconds: seconds, timerPlay: timerPlay });
+    timerPlay && this.timer('continue')
     let timeOut;
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.setState({ timestamp: formatDistanceToNow(timestamp, { includeSeconds: true }) });
       const timer = Math.floor((Date.now() - timestamp) / 1000);
       switch (timer) {
@@ -38,27 +44,76 @@ export default class Task extends Component {
         case timer > 2700:
           timeOut = 1000 * 60 * 45; // меньше часа назад
           break;
-        case timer > 86400:
+        case timer > 86_400:
           timeOut = 1000 * 60 * 60 * 24; // 1 день
           break;
         default:
-          timeOut = 10000;
+          timeOut = 10_000;
           break;
       }
     }, timeOut);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  delTask = () => {
+    clearInterval(this.timerInterval)
+    this.props.onDelTasks()
+  }
+
+  timer = (event) => {
+    clearInterval(this.timerInterval)
+    const { id, timeOnData, checked } = this.props;
+    if (!event) return
+    let { minutes, seconds } = this.state;
+    if ((event === 'continue' || event.target.name === 'play') && !checked && (seconds || minutes !== 0)) {
+      this.setState({ timerPlay: true })
+      this.timerInterval = setInterval(() => {
+        seconds--
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(this.timerInterval)
+            timeOnData(minutes, seconds, id, false);
+            return this.setState({ minutes: 0, seconds: 0, timerPlay: false })
+          }
+          minutes--;
+          seconds = 59;
+        }
+        this.setState({ minutes: minutes, seconds: seconds })
+        timeOnData(minutes, seconds, id, true);
+      }, 1000)
+    } else {
+      this.setState({ timerPlay: false })
+      return timeOnData(this.state.minutes, this.state.seconds, id, false);
+    }
+  }
+
+  render() {
+    const { label, id, checked, onChecked } = this.props;
+    const { minutes, seconds } = this.state;
     let checkClass = 'view';
-    if (checked) checkClass = 'completed';
+    if (checked) {
+      checkClass = 'completed';
+      this.timer()
+    }
 
     return (
       <li className={checkClass}>
         <div className="view">
-          <input id={id} className="toggle" type="checkbox" onChange={onChecked} checked = {checked}/>
+          <input id={id} className="toggle" type="checkbox" onChange={onChecked} checked={checked} />
           <label htmlFor={id}>
-            <span className="description">{label}</span>
-            <span className="created">created {this.state.timestamp} ago</span>
+            <span className="title">{label}</span>
+            <span className="description">
+              <button name="play" onClick={this.timer} className="icon icon-play"></button>
+              <button onClick={this.timer} className="icon icon-pause"></button>
+              {`${minutes}:${seconds}`}
+            </span>
+            <span className="description">created {this.state.timestamp} ago</span>
           </label>
           <button type="button" className="icon icon-edit" />
-          <button type="button" className="icon icon-destroy" onClick={onDelTasks} />
+          <button type="button" className="icon icon-destroy" onClick={this.delTask} />
         </div>
       </li>
     );
