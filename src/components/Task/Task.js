@@ -32,8 +32,8 @@ export default class Task extends Component {
     timeOnData: PropTypes.func,
     label: PropTypes.string,
     id: PropTypes.number,
-    minutes: PropTypes.number,
-    minutes: PropTypes.number,
+    minutes: PropTypes.string,
+    minutes: PropTypes.string,
     timerPlay: PropTypes.bool,
   };
 
@@ -41,7 +41,7 @@ export default class Task extends Component {
     const { timestamp, minutes, seconds, timerPlay } = this.props;
     await this.setState({ minutes: minutes, seconds: seconds, timerPlay: timerPlay });
     timerPlay && this.timer('continue')
-    let timeOut;
+    let timeOut
     this.interval = setInterval(() => {
       this.setState({ timestamp: formatDistanceToNow(timestamp, { includeSeconds: true }) });
       const timer = Math.floor((Date.now() - timestamp) / 1000);
@@ -74,27 +74,28 @@ export default class Task extends Component {
   timer = (event) => {
     clearInterval(this.timerInterval)
     const { id, timeOnData, checked } = this.props;
-    if (!event) return
     let { minutes, seconds } = this.state;
-    if ((event === 'continue' || event.target.name === 'play') && !checked && (seconds || minutes !== 0)) {
+    let time = (+minutes * 60 + +seconds)
+    if (!event) return
+    if ((event === 'continue' || event.target.name === 'play') && !checked && time !== 0) {
       this.setState({ timerPlay: true })
       this.timerInterval = setInterval(() => {
-        seconds--
-        if (seconds === 0) {
-          if (minutes === 0) {
-            clearInterval(this.timerInterval)
-            timeOnData(minutes, seconds, id, false);
-            return this.setState({ minutes: 0, seconds: 0, timerPlay: false })
-          }
-          minutes--;
-          seconds = 59;
-        }
+        time--
+        minutes = Math.floor(time / 60)
+        seconds = Math.floor(time % 60)
+        seconds < 10 && (seconds = `0${seconds}`)
+        minutes < 10 && (minutes = `0${minutes}`)
         this.setState({ minutes: minutes, seconds: seconds })
         timeOnData(minutes, seconds, id, true);
+        if (time === 0) {
+          clearInterval(this.timerInterval)
+          this.setState({ timerPlay: true })
+          return timeOnData(minutes, seconds, id, false);
+        }
       }, 1000)
     } else {
       this.setState({ timerPlay: false })
-      return timeOnData(this.state.minutes, this.state.seconds, id, false);
+      return timeOnData(minutes, seconds, id, false);
     }
   }
 
@@ -106,7 +107,6 @@ export default class Task extends Component {
       checkClass = 'completed';
       this.timer()
     }
-
     return (
       <li className={checkClass}>
         <div className="view">
@@ -116,7 +116,7 @@ export default class Task extends Component {
             <span className="description">
               <button name="play" onClick={this.timer} className="icon icon-play"></button>
               <button onClick={this.timer} className="icon icon-pause"></button>
-              {`${minutes}:${seconds}`}
+              {minutes + ':' + seconds}
             </span>
             <span className="description">created {this.state.timestamp} ago</span>
           </label>

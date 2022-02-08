@@ -8,12 +8,15 @@ export default class TasksFilter extends Component {
 
   static propTypes = {
     toggle: PropTypes.func,
-    
+
   };
 
   render() {
     const { toggle } = this.props
     const { classNameAll, classNameActiv, classNameCompleted } = this.props.togleClasses
+    let classNameAll
+    let classNameActiv
+    let classNameCompleted
     return (
       <ul className="filters">
         <li>

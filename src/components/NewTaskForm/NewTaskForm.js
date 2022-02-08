@@ -26,7 +26,7 @@ export default class NewTaskForm extends Component {
   onSubmit = (event) => {
     const { label, minutes, seconds } = this.state
     event.preventDefault();
-    this.props.onAdd(label, +minutes, +seconds);
+    this.props.onAdd(label, minutes, seconds);
     this.setState({ label: '', minutes: '', seconds: '' });
   };
 

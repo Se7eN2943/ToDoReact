@@ -4,9 +4,9 @@ import TaskList from '../TaskList/TaskList';
 import Footer from '../Footer/Footer';
 
 let data = [
-    { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date(), minutes: 9, seconds: 59, timerPlay: false },
-    { label: 'Create react app', id: 2, checked: false, timestamp: new Date(), minutes: 0, seconds: 2, timerPlay: false },
-    { label: 'Rejoice', id: 3, checked: false, timestamp: new Date(), minutes: 0, seconds: 20, timerPlay: false }
+    { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date(), minutes: '09', seconds: '59', timerPlay: false },
+    { label: 'Create react app', id: 2, checked: false, timestamp: new Date(), minutes: '00', seconds: '02', timerPlay: false },
+    { label: 'Rejoice', id: 3, checked: false, timestamp: new Date(), minutes: '00', seconds: '20', timerPlay: false }
 ];
 
 export default class App extends Component {
