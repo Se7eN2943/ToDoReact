@@ -10,37 +10,11 @@ let data = [
 ];
 
 export default class App extends Component {
-    state = { todoData: data, togleClasses: { classNameAll: 'selected', classNameActiv: ' ', classNameCompleted: ' ' } };
+    state = { todoData: data, togleClass: 'All' };
 
     toggle = (value, name = 'All') => {
         this.todoFilter(value);
-        if (name === 'Active') {
-            return this.setState({
-                togleClasses: {
-                    classNameAll: ' ',
-                    classNameActiv: 'selected',
-                    classNameCompleted: ' '
-                }
-            });
-        }
-        if (name === 'All') {
-            return this.setState({
-                togleClasses: {
-                    classNameAll: 'selected',
-                    classNameActiv: ' ',
-                    classNameCompleted: ' '
-                }
-            });
-        }
-        if (name === 'Completed') {
-            return this.setState({
-                togleClasses: {
-                    classNameAll: ' ',
-                    classNameActiv: ' ',
-                    classNameCompleted: 'selected'
-                }
-            });
-        }
+        return this.setState({ togleClass: name });
     }
 
     clearComplite = () => {
@@ -102,7 +76,7 @@ export default class App extends Component {
                     clearComplite={this.clearComplite}
                     dataLength={this.state.todoData.length}
                     toggle={this.toggle}
-                    togleClasses={this.state.togleClasses}
+                    togleClass={this.state.togleClass}
                 />
             </div>
         );
