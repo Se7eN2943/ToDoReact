@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import NewTaskForm from '../NewTaskForm/NewTaskForm';
 import TaskList from '../TaskList/TaskList';
 import Footer from '../Footer/Footer';
@@ -9,26 +9,28 @@ let data = [
     { label: 'Rejoice', id: 3, checked: false, timestamp: new Date(), minutes: '00', seconds: '20', timerPlay: false }
 ];
 
-export default class App extends Component {
-    state = { todoData: data, togleClass: 'All' };
+const App = () => {
+    
+    const [todoData, setTodoData] = useState(data)
+    const [togleClass, setTogleClass] = useState('All')
 
-    toggle = (value, name = 'All') => {
-        this.todoFilter(value);
-        return this.setState({ togleClass: name });
+    const todoFilter = (status = 'All') => {
+        if (status === 'All') return setTodoData(data);
+        return setTodoData(data.filter((item) => item.checked === status))
+    };
+
+    const toggle = (value, name = 'All') => {
+        todoFilter(value);
+        return setTogleClass(name)
     }
 
-    clearComplite = () => {
+    const clearComplite = () => {
         data = data.filter(item => !item.checked);
-        return this.setState({ todoData: this.state.todoData.filter((item) => !item.checked) });
+        return setTodoData(todoData => todoData.filter((item) => !item.checked))
     };
 
-    todoFilter = (status = 'All') => {
-        if (status === 'All') return this.setState({ todoData: data });
-        return this.setState({ todoData: data.filter((item) => item.checked === status) });
-    };
-
-    timeOnData = (minutes, seconds, id, timerPlay) => {
-        data = data.map(item => {
+    const timeOnData = (minutes, seconds, id, timerPlay) => {
+        return data = data.map(item => {
             if (item.id === id) {
                 item.minutes = minutes
                 item.seconds = seconds
@@ -38,21 +40,19 @@ export default class App extends Component {
         })
     }
 
-    onChecked = (id) => {
-        this.setState({
-            todoData: this.state.todoData.map((item) => {
-                if (item.id === id) item.checked = !item.checked;
-                return item;
-            })
-        });
+    const onChecked = id => {
+        return setTodoData(todoData => todoData.map((item) => {
+            item.id === id && (item.checked = !item.checked);
+            return item;
+        }))
     };
 
-    onDelTasks = (id) => {
-        data = this.state.todoData.filter((item) => item.id !== id);
-        return this.setState({ todoData: data });
+    const onDelTasks = id => {
+        data = todoData.filter((item) => item.id !== id);
+        return setTodoData(data)
     };
 
-    onAdd = (value, min, sec) => {
+    const onAdd = (value, min, sec) => {
         const newTask = {
             label: value,
             minutes: min,
@@ -63,22 +63,22 @@ export default class App extends Component {
             timestamp: new Date(),
         };
         data.unshift(newTask);
-        this.setState({ todoData: data });
-        this.toggle()
+        setTodoData(data)
+        toggle()
     };
 
-    render() {
-        return (
-            <div>
-                <NewTaskForm onAdd={this.onAdd} />
-                <TaskList tododata={this.state.todoData} onDelTasks={(id) => this.onDelTasks(id)} timeOnData={this.timeOnData} onChecked={this.onChecked} />
-                <Footer
-                    clearComplite={this.clearComplite}
-                    dataLength={this.state.todoData.length}
-                    toggle={this.toggle}
-                    togleClass={this.state.togleClass}
-                />
-            </div>
-        );
-    }
+    return (
+        <div>
+            <NewTaskForm onAdd={onAdd} />
+            <TaskList tododata={todoData} onDelTasks={id => onDelTasks(id)} timeOnData={timeOnData} onChecked={onChecked} />
+            <Footer
+                clearComplite={clearComplite}
+                dataLength={data.length}
+                toggle={toggle}
+                togleClass={togleClass}
+            />
+        </div>
+    );
 }
+
+export default App
