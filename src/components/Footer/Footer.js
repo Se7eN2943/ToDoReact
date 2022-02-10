@@ -1,30 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TasksFilter from '../TasksFilter/TasksFilter';
 
-export default class Footer extends Component {
-  static defaultProps = {
-    dataLength: 1,
-    todoFilter: () => {},
-    clearComplite: () => {},
-  };
 
-  static propTypes = {
-    dataLength: PropTypes.number,
-    todoFilter: PropTypes.func,
-    clearComplite: PropTypes.func,
-  };
-
-  render() {
-    const { dataLength, clearComplite, toggle, togleClass } = this.props;
-    return (
-      <footer className="footer">
-        <span className="todo-count">{dataLength} items left</span>
-        <TasksFilter toggle={toggle} togleClass={togleClass}/>
-        <button type="button" onClick={() => clearComplite()} className="clear-completed">
-          Clear completed
-        </button>
-      </footer>
-    );
-  }
+const Footer = (props) => {
+  const { dataLength, clearComplite, toggle, togleClass } = props;
+  return (
+    <footer className="footer">
+      <span className="todo-count">{dataLength} items left</span>
+      <TasksFilter toggle={toggle} togleClass={togleClass} />
+      <button type="button" onClick={() => clearComplite()} className="clear-completed">
+        Clear completed
+      </button>
+    </footer>
+  );
 }
+
+Footer.defaultProps = {
+  dataLength: 1,
+  todoFilter: () => { },
+  clearComplite: () => { },
+};
+
+Footer.propTypes = {
+  dataLength: PropTypes.number,
+  todoFilter: PropTypes.func,
+  clearComplite: PropTypes.func,
+};
+
+export default Footer
