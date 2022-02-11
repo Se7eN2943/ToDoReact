@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TasksFilter from '../TasksFilter/TasksFilter';
 
-
-const Footer = (props) => {
-  const { dataLength, clearComplite, toggle, togleClass } = props;
+const Footer = ({ dataLength, clearComplite, toggle, togleClass }) => {
   return (
     <footer className="footer">
       <span className="todo-count">{dataLength} items left</span>

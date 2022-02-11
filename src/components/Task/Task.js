@@ -2,24 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 
-
-const Task = props => {
-  const { label, id, checked, onChecked, onDelTasks, timestamp: dataTimestamp, minutes: min, seconds: sec, timerPlay: dataTimerPlay, timeOnData } = props;
+const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimestamp, minutes: min, seconds: sec, timerPlay: dataTimerPlay, timeOnData, availableTimer }) => {
   const [timestamp, setTimestamp] = useState(formatDistanceToNow(Date.now(), { includeSeconds: true }))
-  let [minutes, setMinutes] = useState(0)
-  let [seconds, setSeconds] = useState(0)
-  const [timerPlay, setTimerPlay] = useState(false)
-
-  let timerInterval
-
-
-
+  let [minutes, setMinutes] = useState(min)
+  let [seconds, setSeconds] = useState(sec)
+  const [timerPlay, setTimerPlay] = useState(dataTimerPlay)
 
   useEffect(() => {
     setMinutes(min)
     setSeconds(sec)
     setTimerPlay(dataTimerPlay)
-    dataTimerPlay && timer('continue')
+    timerPlay && timer('continue')
     let timeOut
     const interval = setInterval(() => {
       setTimestamp(formatDistanceToNow(dataTimestamp, { includeSeconds: true }))
@@ -43,12 +36,12 @@ const Task = props => {
   }, [])
 
   const timer = event => {
-    clearInterval(timerInterval)
+    clearInterval(window.timerInterval)
     let time = (+minutes * 60 + +seconds)
     if (event === undefined) return
     if ((event === 'continue' || event.target.name === 'play') && !checked && time !== 0) {
       setTimerPlay(true)
-      timerInterval = setInterval(() => {
+      window.timerInterval = setInterval(() => {
         time--
         minutes = Math.floor(time / 60)
         seconds = Math.floor(time % 60)
@@ -70,7 +63,7 @@ const Task = props => {
   }
 
   const delTask = () => {
-    clearInterval(timerInterval)
+    clearInterval(window.timerInterval)
     onDelTasks()
   }
 
@@ -85,11 +78,13 @@ const Task = props => {
         <input id={id} className="toggle" type="checkbox" onChange={onChecked} checked={checked} />
         <label htmlFor={id}>
           <span className="title">{label}</span>
-          <span className="description">
-            <button name="play" onClick={timer} className="icon icon-play"></button>
-            <button onClick={timer} className="icon icon-pause"></button>
-            {minutes + ':' + seconds}
-          </span>
+          {availableTimer &&
+            <span className="description">
+              <button name="play" onClick={timer} className="icon icon-play"></button>
+              <button onClick={timer} className="icon icon-pause"></button>
+              {minutes + ':' + seconds}
+            </span>
+          }
           <span className="description">created {timestamp} ago</span>
         </label>
         <button type="button" className="icon icon-edit" />
@@ -107,8 +102,8 @@ Task.defaultProps = {
   timeOnData: () => { },
   label: '',
   id: Math.random(),
-  minutes: 0,
-  seconds: 0,
+  minutes: "00",
+  seconds: "00",
   timerPlay: false,
 };
 

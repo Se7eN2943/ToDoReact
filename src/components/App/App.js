@@ -4,19 +4,18 @@ import TaskList from '../TaskList/TaskList';
 import Footer from '../Footer/Footer';
 
 let data = [
-    { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date(), minutes: '09', seconds: '59', timerPlay: false },
-    { label: 'Create react app', id: 2, checked: false, timestamp: new Date(), minutes: '00', seconds: '02', timerPlay: false },
-    { label: 'Rejoice', id: 3, checked: false, timestamp: new Date(), minutes: '00', seconds: '20', timerPlay: false }
+    { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date(), minutes: '09', seconds: '59', timerPlay: false, availableTimer: true },
+    { label: 'Create react app', id: 2, checked: false, timestamp: new Date(), minutes: '00', seconds: '02', timerPlay: false, availableTimer: true },
+    { label: 'Rejoice', id: 3, checked: false, timestamp: new Date(), minutes: '00', seconds: '20', timerPlay: false, availableTimer: true }
 ];
 
 const App = () => {
-    
     const [todoData, setTodoData] = useState(data)
     const [togleClass, setTogleClass] = useState('All')
 
     const todoFilter = (status = 'All') => {
         if (status === 'All') return setTodoData(data);
-        return setTodoData(data.filter((item) => item.checked === status))
+        return setTodoData(data.filter(item => item.checked === status))
     };
 
     const toggle = (value, name = 'All') => {
@@ -26,7 +25,7 @@ const App = () => {
 
     const clearComplite = () => {
         data = data.filter(item => !item.checked);
-        return setTodoData(todoData => todoData.filter((item) => !item.checked))
+        return setTodoData(todoData => todoData.filter(item => !item.checked))
     };
 
     const timeOnData = (minutes, seconds, id, timerPlay) => {
@@ -53,7 +52,12 @@ const App = () => {
     };
 
     const onAdd = (value, min, sec) => {
-        const newTask = {
+        if (min || sec) {
+            !sec ? sec = '00' : min = '00'
+            sec && sec.length < 2 && (sec = `0${sec}`)
+            min && min.length < 2 && (min = `0${min}`)
+        }
+        const newTask = [{
             label: value,
             minutes: min,
             seconds: sec,
@@ -61,10 +65,11 @@ const App = () => {
             id: Math.random(),
             checked: false,
             timestamp: new Date(),
-        };
-        data.unshift(newTask);
-        setTodoData(data)
+            availableTimer: (!sec && !min) ? false : true
+        }];
+        data = newTask.concat(data)
         toggle()
+        return setTodoData(data)
     };
 
     return (

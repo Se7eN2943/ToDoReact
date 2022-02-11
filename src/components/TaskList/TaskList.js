@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Task from '../Task/Task';
 
-const TaskList = function TaskList(props) {
-  const { tododata, onDelTasks, onChecked, timeOnData } = props;
+const TaskList = function TaskList({ tododata, onDelTasks, onChecked, timeOnData }) {
   const elements = tododata.map((item) => (
     <Task timeOnData={timeOnData} onChecked={() => onChecked(item.id)} onDelTasks={() => onDelTasks(item.id)} key={item.id} {...item} />
   ));
@@ -13,8 +12,6 @@ const TaskList = function TaskList(props) {
       <ul className="todo-list">{elements}</ul>
     </section>
   );
-
-
 };
 
 TaskList.defaultProps = {

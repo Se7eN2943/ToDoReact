@@ -5,8 +5,7 @@ function AppHeader() {
   return <h1>ToDoes</h1>;
 }
 
-const NewTaskForm = props => {
-
+const NewTaskForm = ({ onAdd }) => {
   const [label, setLabel] = useState('')
   const [minutes, setMinutes] = useState('')
   const [seconds, setSeconds] = useState('')
@@ -19,7 +18,7 @@ const NewTaskForm = props => {
 
   const onSubmit = event => {
     event.preventDefault();
-    props.onAdd(label, minutes, seconds);
+    onAdd(label, minutes, seconds);
     setLabel('');
     setMinutes('');
     setSeconds('');
