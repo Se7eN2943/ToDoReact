@@ -13,31 +13,21 @@ const App = () => {
     const [todoData, setTodoData] = useState(data)
     const [togleClass, setTogleClass] = useState('All')
 
-    const todoFilter = (status = 'All') => {
-        if (status === 'All') return setTodoData(data);
-        return setTodoData(data.filter(item => item.checked === status))
-    };
+    const todoFilter = status => setTodoData(status);
 
-    const toggle = (value, name = 'All') => {
-        todoFilter(value);
-        return setTogleClass(name)
-    }
+    const clearComplite = () => setTodoData(todoData => todoData.filter(item => !item.checked));
 
-    const clearComplite = () => {
-        data = data.filter(item => !item.checked);
-        return setTodoData(todoData => todoData.filter(item => !item.checked))
-    };
-
-    const timeOnData = (minutes, seconds, id, timerPlay) => {
-        return data = data.map(item => {
-            if (item.id === id) {
-                item.minutes = minutes
-                item.seconds = seconds
-                item.timerPlay = timerPlay
-            }
-            return item
+    const timeOnData = (minutes, seconds, id, timerPlay) =>
+        setTodoData(todoData => {
+            todoData.map(item => {
+                if (item.id === id) {
+                    item.minutes = minutes
+                    item.seconds = seconds
+                    item.timerPlay = timerPlay
+                }
+                return item
+            })
         })
-    }
 
     const onChecked = id => {
         return setTodoData(todoData => todoData.map((item) => {
@@ -46,16 +36,12 @@ const App = () => {
         }))
     };
 
-    const onDelTasks = id => {
-        data = todoData.filter((item) => item.id !== id);
-        return setTodoData(data)
-    };
+    const onDelTasks = id => setTodoData(() => todoData.filter(item => item.id !== id));
 
     const onAdd = (value, min, sec) => {
         if (min || sec) {
-            !sec ? sec = '00' : min = '00'
-            sec && sec.length < 2 && (sec = `0${sec}`)
-            min && min.length < 2 && (min = `0${min}`)
+            min ? (+ min < 10 && (min = `0${min}`)) : sec && (min = '00')
+            sec ? (+sec < 10 && (sec = `0${sec}`)) : sec = '00'
         }
         const newTask = [{
             label: value,
@@ -65,11 +51,8 @@ const App = () => {
             id: Math.random(),
             checked: false,
             timestamp: new Date(),
-            availableTimer: (!sec && !min) ? false : true
         }];
-        data = newTask.concat(data)
-        toggle()
-        return setTodoData(data)
+        return setTodoData(newTask.concat(this.state.todoData))
     };
 
     return (
@@ -79,7 +62,7 @@ const App = () => {
             <Footer
                 clearComplite={clearComplite}
                 dataLength={data.length}
-                toggle={toggle}
+                todoFilter={todoFilter}
                 togleClass={togleClass}
             />
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TasksFilter = ({ toggle, togleClass: className }) => {
+const TasksFilter = ({ todoFilter, togleClass: className }) => {
   let classNameAll
   let classNameActiv
   let classNameCompleted
@@ -30,19 +30,19 @@ const TasksFilter = ({ toggle, togleClass: className }) => {
   return (
     <ul className="filters">
       <li>
-        <button type="button" onClick={() => toggle('All', 'All')} className={classNameAll}>
+        <button type="button" onClick={() => todoFilter('All')} className={classNameAll}>
           All
         </button>
       </li>
       <li>
-        <button type="button" onClick={() => toggle(false, 'Active')} className={classNameActiv}>
+        <button type="button" onClick={() => todoFilter(false)} className={classNameActiv}>
           Active
         </button>
       </li>
       <li>
         <button
           type="button"
-          onClick={() => toggle(true, 'Completed')}
+          onClick={() => todoFilter(true)}
           className={classNameCompleted}
         >
           Completed
