@@ -12,48 +12,39 @@ let data = [
 export default class App extends Component {
     state = { todoData: data, togleClass: 'All' };
 
-    toggle = (value, name = 'All') => {
-        this.todoFilter(value);
-        return this.setState({ togleClass: name });
-    }
+    clearComplite = () => this.setState(() => ({ todoData: this.state.todoData.filter(item => !item.checked) }));
 
-    clearComplite = () => {
-        data = data.filter(item => !item.checked);
-        return this.setState({ todoData: this.state.todoData.filter((item) => !item.checked) });
-    };
+    todoFilter = status => this.setState({ togleClass: status });;
 
-    todoFilter = (status = 'All') => {
-        if (status === 'All') return this.setState({ todoData: data });
-        return this.setState({ todoData: data.filter((item) => item.checked === status) });
-    };
+    timeOnData = (minutes, seconds, id, timerPlay) =>
+        this.setState(() => ({
+            todoData: this.state.todoData.map(item => {
+                if (item.id === id) {
+                    item.minutes = minutes
+                    item.seconds = seconds
+                    item.timerPlay = timerPlay
+                }
+                return item
+            })
+        }))
 
-    timeOnData = (minutes, seconds, id, timerPlay) => {
-        data = data.map(item => {
-            if (item.id === id) {
-                item.minutes = minutes
-                item.seconds = seconds
-                item.timerPlay = timerPlay
-            }
-            return item
-        })
-    }
-
-    onChecked = (id) => {
-        this.setState({
-            todoData: this.state.todoData.map((item) => {
-                if (item.id === id) item.checked = !item.checked;
+    onChecked = id => {
+        this.setState(() => ({
+            todoData: this.state.todoData.map(item => {
+                item.id === id && (item.checked = !item.checked);
                 return item;
             })
-        });
+        }));
     };
 
-    onDelTasks = (id) => {
-        data = this.state.todoData.filter((item) => item.id !== id);
-        return this.setState({ todoData: data });
-    };
+    onDelTasks = id => this.setState(() => ({
+        todoData: this.state.todoData.filter(item => item.id !== id)
+    }));
 
     onAdd = (value, min, sec) => {
-        const newTask = {
+        sec && (+sec < 10 && (sec = `0${sec}`))
+        min && (+ min < 10 && (min = `0${min}`))
+        const newTask = [{
             label: value,
             minutes: min,
             seconds: sec,
@@ -61,21 +52,24 @@ export default class App extends Component {
             id: Math.random(),
             checked: false,
             timestamp: new Date(),
-        };
-        data.unshift(newTask);
-        this.setState({ todoData: data });
-        this.toggle()
+        }];
+        this.setState(() => ({ todoData: newTask.concat(this.state.todoData) }));
     };
 
     render() {
         return (
             <div>
                 <NewTaskForm onAdd={this.onAdd} />
-                <TaskList tododata={this.state.todoData} onDelTasks={(id) => this.onDelTasks(id)} timeOnData={this.timeOnData} onChecked={this.onChecked} />
+                <TaskList tododata={this.state.todoData}
+                    onDelTasks={(id) => this.onDelTasks(id)}
+                    timeOnData={this.timeOnData}
+                    onChecked={this.onChecked}
+                    togleClass={this.state.togleClass}
+                />
                 <Footer
                     clearComplite={this.clearComplite}
                     dataLength={this.state.todoData.length}
-                    toggle={this.toggle}
+                    todoFilter={this.todoFilter}
                     togleClass={this.state.togleClass}
                 />
             </div>

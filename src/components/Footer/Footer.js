@@ -16,11 +16,11 @@ export default class Footer extends Component {
   };
 
   render() {
-    const { dataLength, clearComplite, toggle, togleClass } = this.props;
+    const { dataLength, clearComplite, todoFilter, togleClass } = this.props;
     return (
       <footer className="footer">
         <span className="todo-count">{dataLength} items left</span>
-        <TasksFilter toggle={toggle} togleClass={togleClass}/>
+        <TasksFilter todoFilter={todoFilter} togleClass={togleClass}/>
         <button type="button" onClick={() => clearComplite()} className="clear-completed">
           Clear completed
         </button>

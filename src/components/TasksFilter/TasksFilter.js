@@ -11,49 +11,49 @@ export default class TasksFilter extends Component {
   };
 
   render() {
-    const { toggle, togleClass: className } = this.props
-    let classNameAll
-    let classNameActiv
-    let classNameCompleted
+    const { todoFilter, togleClass: className } = this.props
+    let All
+    let Activ
+    let Completed
     switch (className) {
       case "All":
-        classNameAll = "selected"
-        classNameActiv = " "
-        classNameCompleted = " "
+        All = "selected"
+        Activ = " "
+        Completed = " "
         break;
-      case "Active":
-        classNameAll = " "
-        classNameActiv = "selected"
-        classNameCompleted = " "
+      case false:
+        All = " "
+        Activ = "selected"
+        Completed = " "
         break;
-      case "Completed":
-        classNameAll = " "
-        classNameActiv = " "
-        classNameCompleted = "selected"
+      case true:
+        All = " "
+        Activ = " "
+        Completed = "selected"
         break;
       default:
-        classNameAll = "selected"
-        classNameActiv = " "
-        classNameCompleted = " "
+        All = "selected"
+        Activ = " "
+        Completed = " "
     }
 
     return (
       <ul className="filters">
         <li>
-          <button type="button" onClick={() => toggle('All', 'All')} className={classNameAll}>
+          <button type="button" onClick={() => todoFilter('All')} className={All}>
             All
           </button>
         </li>
         <li>
-          <button type="button" onClick={() => toggle(false, 'Active')} className={classNameActiv}>
+          <button type="button" onClick={() => todoFilter(false)} className={Activ}>
             Active
           </button>
         </li>
         <li>
           <button
             type="button"
-            onClick={() => toggle(true, 'Completed')}
-            className={classNameCompleted}
+            onClick={() => todoFilter(true)}
+            className={Completed}
           >
             Completed
           </button>
