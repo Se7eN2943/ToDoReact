@@ -2,40 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const TasksFilter = ({ todoFilter, togleClass: className }) => {
-  let classNameAll
-  let classNameActiv
-  let classNameCompleted
+  let All
+  let Activ
+  let Completed
   switch (className) {
-    case "All":
-      classNameAll = "selected"
-      classNameActiv = " "
-      classNameCompleted = " "
+    case false:
+      All = " "
+      Activ = "selected"
+      Completed = " "
       break;
-    case "Active":
-      classNameAll = " "
-      classNameActiv = "selected"
-      classNameCompleted = " "
-      break;
-    case "Completed":
-      classNameAll = " "
-      classNameActiv = " "
-      classNameCompleted = "selected"
+    case true:
+      All = " "
+      Activ = " "
+      Completed = "selected"
       break;
     default:
-      classNameAll = "selected"
-      classNameActiv = " "
-      classNameCompleted = " "
+      All = "selected"
+      Activ = " "
+      Completed = " "
   }
 
   return (
     <ul className="filters">
       <li>
-        <button type="button" onClick={() => todoFilter('All')} className={classNameAll}>
+        <button type="button" onClick={() => todoFilter('All')} className={All}>
           All
         </button>
       </li>
       <li>
-        <button type="button" onClick={() => todoFilter(false)} className={classNameActiv}>
+        <button type="button" onClick={() => todoFilter(false)} className={Activ}>
           Active
         </button>
       </li>
@@ -43,7 +38,7 @@ const TasksFilter = ({ todoFilter, togleClass: className }) => {
         <button
           type="button"
           onClick={() => todoFilter(true)}
-          className={classNameCompleted}
+          className={Completed}
         >
           Completed
         </button>

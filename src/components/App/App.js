@@ -13,13 +13,13 @@ const App = () => {
     const [todoData, setTodoData] = useState(data)
     const [togleClass, setTogleClass] = useState('All')
 
-    const todoFilter = status => setTodoData(status);
+    const todoFilter = status => setTogleClass(status);
 
     const clearComplite = () => setTodoData(todoData => todoData.filter(item => !item.checked));
 
     const timeOnData = (minutes, seconds, id, timerPlay) =>
         setTodoData(todoData => {
-            todoData.map(item => {
+            return todoData.map(item => {
                 if (item.id === id) {
                     item.minutes = minutes
                     item.seconds = seconds
@@ -52,13 +52,19 @@ const App = () => {
             checked: false,
             timestamp: new Date(),
         }];
-        return setTodoData(newTask.concat(this.state.todoData))
+        return setTodoData(newTask.concat(todoData))
     };
 
     return (
         <div>
             <NewTaskForm onAdd={onAdd} />
-            <TaskList tododata={todoData} onDelTasks={id => onDelTasks(id)} timeOnData={timeOnData} onChecked={onChecked} />
+            <TaskList
+                togleClass={togleClass}
+                tododata={todoData}
+                onDelTasks={id => onDelTasks(id)}
+                timeOnData={timeOnData}
+                onChecked={onChecked}
+            />
             <Footer
                 clearComplite={clearComplite}
                 dataLength={data.length}
