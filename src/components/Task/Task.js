@@ -113,17 +113,19 @@ export default class Task extends Component {
           <input id={id} className="toggle" type="checkbox" onChange={onChecked} checked={checked} />
           <label htmlFor={id}>
             <span className="title">{label}</span>
-            <span className="description">
-              <button name="play" onClick={this.timer} className="icon icon-play"></button>
-              <button onClick={this.timer} className="icon icon-pause"></button>
-              {minutes + ':' + seconds}
-            </span>
+            {(minutes || seconds) &&
+              < span className="description">
+                <button name="play" onClick={this.timer} className="icon icon-play"></button>
+                <button onClick={this.timer} className="icon icon-pause"></button>
+                {minutes + ':' + seconds}
+              </span>
+            }
             <span className="description">created {this.state.timestamp} ago</span>
           </label>
           <button type="button" className="icon icon-edit" />
           <button type="button" className="icon icon-destroy" onClick={this.delTask} />
         </div>
-      </li>
+      </li >
     );
   }
 }

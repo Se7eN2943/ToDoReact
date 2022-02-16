@@ -42,8 +42,10 @@ export default class App extends Component {
     }));
 
     onAdd = (value, min, sec) => {
-        sec && (+sec < 10 && (sec = `0${sec}`))
-        min && (+ min < 10 && (min = `0${min}`))
+        if (min || sec) {
+            min ? (+ min < 10 && (min = `0${min}`)) : sec && (min = '00')
+            sec ? (+sec < 10 && (sec = `0${sec}`)) : sec = '00'
+        }
         const newTask = [{
             label: value,
             minutes: min,
