@@ -78,10 +78,10 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
         <input id={id} className="toggle" type="checkbox" onChange={onChecked} checked={checked} />
         <label htmlFor={id}>
           <span className="title">{label}</span>
-          {availableTimer &&
-            <span className="description">
-              <button name="play" onClick={timer} className="icon icon-play"></button>
-              <button onClick={timer} className="icon icon-pause"></button>
+          {(minutes || seconds) &&
+            < span className="description">
+              <button name="play" onClick={this.timer} className="icon icon-play"></button>
+              <button onClick={this.timer} className="icon icon-pause"></button>
               {minutes + ':' + seconds}
             </span>
           }
