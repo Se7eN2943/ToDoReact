@@ -36,12 +36,11 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
   }, [])
 
   const timer = event => {
-    clearInterval(window.timerInterval)
-    if (event === undefined) return 
+    if (event === undefined) return clearInterval(Task.timerInterval)
     let time = (+minutes * 60 + +seconds)
     if ((event === 'continue' || event.target.name === 'play') && !checked && time !== 0) {
       setTimerPlay(true)
-      window.timerInterval = setInterval(() => {
+      Task.timerInterval = setInterval(() => {
         time--
         minutes = Math.floor(time / 60)
         seconds = Math.floor(time % 60)
@@ -51,19 +50,20 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
         setSeconds(seconds)
         timeOnData(minutes, seconds, id, true);
         if (time === 0) {
-          clearInterval(timerInterval)
+          clearInterval(Task.timerInterval)
           setTimerPlay(false)
           return timeOnData(minutes, seconds, id, false);
         }
       }, 1000)
     } else {
+      clearInterval(Task.timerInterval)
       setTimerPlay(false)
       return timeOnData(minutes, seconds, id, false);
     }
   }
 
   const delTask = () => {
-    clearInterval(window.timerInterval)
+    clearInterval(Task.timerInterval)
     onDelTasks()
   }
 
