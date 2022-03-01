@@ -10,12 +10,6 @@ const NewTaskForm = ({ onAdd }) => {
   const [minutes, setMinutes] = useState('')
   const [seconds, setSeconds] = useState('')
 
-  const changeSub = event => {
-    event.target.name === 'label' && setLabel(event.target.value);
-    event.target.name === 'minutes' && setMinutes(event.target.value);
-    event.target.name === 'seconds' && setSeconds(event.target.value);
-  };
-
   const onSubmit = event => {
     event.preventDefault();
     onAdd(label, minutes, seconds);
@@ -33,7 +27,7 @@ const NewTaskForm = ({ onAdd }) => {
             name='label'
             value={label}
             type="text"
-            onChange={changeSub}
+            onChange={e => setLabel(e.target.value)}
             className="new-todo"
             placeholder="What needs to be done?"
             autoFocus
@@ -45,7 +39,7 @@ const NewTaskForm = ({ onAdd }) => {
             className="new-todo-form__timer"
             placeholder="Min"
             value={minutes}
-            onChange={changeSub}
+            onChange={e => setMinutes(e.target.value)}
             autoFocus
             min={0} />
           <input
@@ -54,7 +48,7 @@ const NewTaskForm = ({ onAdd }) => {
             className="new-todo-form__timer"
             placeholder="Sec"
             value={seconds}
-            onChange={changeSub}
+            onChange={e => setSeconds(e.target.value)}
             autoFocus
             max={60}
             min={0} />

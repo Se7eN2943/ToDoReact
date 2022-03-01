@@ -16,15 +16,15 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
     let timeOut
     const interval = setInterval(() => {
       setTimestamp(formatDistanceToNow(dataTimestamp, { includeSeconds: true }))
-      const timer = Math.floor((Date.now() - timestamp) / 1000);
-      switch (timer) {
-        case timer > 60:
+      const timerInterval = Math.floor((Date.now() - timestamp) / 1000);
+      switch (timerInterval) {
+        case timerInterval > 60:
           timeOut = 1000 * 60; // 1 минута
           break;
-        case timer > 2700:
+        case timerInterval > 2700:
           timeOut = 1000 * 60 * 45; // меньше часа назад
           break;
-        case timer > 86_400:
+        case timerInterval > 86_400:
           timeOut = 1000 * 60 * 60 * 24; // 1 день
           break;
         default:
@@ -36,12 +36,12 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
   }, [])
 
   const timer = event => {
-    clearInterval(timer.timerInterval)
+    clearInterval(window.timerInterval)
+    if (event === undefined) return 
     let time = (+minutes * 60 + +seconds)
-    if (event === undefined) return
     if ((event === 'continue' || event.target.name === 'play') && !checked && time !== 0) {
       setTimerPlay(true)
-      timer.timerInterval = setInterval(() => {
+      window.timerInterval = setInterval(() => {
         time--
         minutes = Math.floor(time / 60)
         seconds = Math.floor(time % 60)
@@ -63,7 +63,7 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
   }
 
   const delTask = () => {
-    clearInterval(timer.timerInterval)
+    clearInterval(window.timerInterval)
     onDelTasks()
   }
 
