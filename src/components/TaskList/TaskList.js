@@ -1,19 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Task from '../Task/Task';
+import filter from '../../utils';
 
-const TaskList = function TaskList({ tododata, onDelTasks, onChecked, timeOnData, togleClass }) {
-  let filteretData;
-  switch (togleClass) {
-    case true:
-      filteretData = tododata.filter(task => task.checked === true)
-      break;
-    case false:
-      filteretData = tododata.filter(task => task.checked === false)
-      break;
-    default:
-      filteretData = tododata
-  }
+const TaskList = ({ tododata, onDelTasks, onChecked, timeOnData, togleClass }) => {
+
+  let filteretData = filter(tododata, togleClass)
+
 
   const elements = filteretData.map(item => (
     <Task

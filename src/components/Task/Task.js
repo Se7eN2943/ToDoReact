@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 
-const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimestamp, minutes: min, seconds: sec, timerPlay: dataTimerPlay, timeOnData, availableTimer }) => {
+const Task = props => {
+  const { label, id, checked, onChecked, onDelTasks, timestamp: dataTimestamp, minutes: min, seconds: sec, timerPlay: dataTimerPlay, timeOnData } = props
   const [timestamp, setTimestamp] = useState(formatDistanceToNow(Date.now(), { includeSeconds: true }))
   let [minutes, setMinutes] = useState(min)
   let [seconds, setSeconds] = useState(sec)
   const [timerPlay, setTimerPlay] = useState(dataTimerPlay)
 
   useEffect(() => {
+
     setMinutes(min)
     setSeconds(sec)
     setTimerPlay(dataTimerPlay)
@@ -36,6 +38,7 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
   }, [])
 
   const timer = event => {
+    
     if (event === undefined) return clearInterval(Task.timerInterval)
     let time = (+minutes * 60 + +seconds)
     if ((event === 'continue' || event.target.name === 'play') && !checked && time !== 0) {
@@ -50,9 +53,9 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
         setSeconds(seconds)
         timeOnData(minutes, seconds, id, true);
         if (time === 0) {
-          clearInterval(Task.timerInterval)
           setTimerPlay(false)
-          return timeOnData(minutes, seconds, id, false);
+          timeOnData(minutes, seconds, id, false);
+          clearInterval(Task.timerInterval)
         }
       }, 1000)
     } else {
@@ -62,8 +65,9 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
     }
   }
 
+
   const delTask = () => {
-    clearInterval(Task.timerInterval)
+    // clearInterval(Task.timerInterval)
     onDelTasks()
   }
 
@@ -72,6 +76,7 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
     checkClass = 'completed';
     timer()
   }
+
   return (
     <li className={checkClass}>
       <div className="view">
@@ -81,7 +86,7 @@ const Task = ({ label, id, checked, onChecked, onDelTasks, timestamp: dataTimest
           {(minutes || seconds) &&
             < span className="description">
               <button name="play" onClick={timer} className="icon icon-play"></button>
-              <button onClick={timer} className="icon icon-pause"></button>
+              <button name="pause" onClick={timer} className="icon icon-pause"></button>
               {minutes + ':' + seconds}
             </span>
           }

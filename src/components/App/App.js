@@ -54,6 +54,7 @@ const App = () => {
         }];
         return setTodoData(newTask.concat(todoData))
     };
+
     return (
         <div>
             <NewTaskForm onAdd={onAdd} />
@@ -66,7 +67,7 @@ const App = () => {
             />
             <Footer
                 clearComplite={clearComplite}
-                dataLength={todoData.length}
+                todoData={todoData}
                 todoFilter={todoFilter}
                 togleClass={togleClass}
             />
