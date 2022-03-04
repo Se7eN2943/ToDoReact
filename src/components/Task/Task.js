@@ -34,13 +34,15 @@ const Task = props => {
           break;
       }
     }, timeOut);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      timeOnData(minutes, seconds, id, true);
+    }
   }, [])
 
-  const timer = event => {
-    
-    if (event === undefined) return clearInterval(Task.timerInterval)
+  const timer = (event) => {
     let time = (+minutes * 60 + +seconds)
+    if (!event) return
     if ((event === 'continue' || event.target.name === 'play') && !checked && time !== 0) {
       setTimerPlay(true)
       Task.timerInterval = setInterval(() => {
@@ -51,11 +53,10 @@ const Task = props => {
         minutes < 10 && (minutes = `0${minutes}`)
         setMinutes(minutes)
         setSeconds(seconds)
-        timeOnData(minutes, seconds, id, true);
         if (time === 0) {
-          setTimerPlay(false)
-          timeOnData(minutes, seconds, id, false);
           clearInterval(Task.timerInterval)
+          setTimerPlay(true)
+          return timeOnData(minutes, seconds, id, false);
         }
       }, 1000)
     } else {
@@ -67,7 +68,7 @@ const Task = props => {
 
 
   const delTask = () => {
-    // clearInterval(Task.timerInterval)
+    clearInterval(Task.timerInterval)
     onDelTasks()
   }
 
