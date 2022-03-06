@@ -11,11 +11,16 @@
 //         "requireConfigFile": false,
 //         "babelOptions": {
 //             "presets": ["@babel/preset-react"]
+//         },
+//         "parserOptions": {
+//             "ecmaVersion": 12
 //         }
 //     },
 //     "env": {
 //         "browser": true,
-//         "jest": true
+//         "jest": true,
+//         "commonjs": true,
+//         "es2021": true
 //     },
 //     "rules": {
 //         "curly": ["error"],
@@ -30,7 +35,6 @@
 //         }],
 //         "no-restricted-syntax": "off",
 //         "prefer-destructuring": "off",
-//         "react/destructuring-assignment": "off",
 //         "react/no-unused-class-component-methods": "off",
 //         "no-return-assign": "off",
 //         "class-methods-use-this": "off",
