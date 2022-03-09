@@ -3,30 +3,30 @@ import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 
 const Task = props => {
-  const { label, id, checked, onChecked, onDelTasks, timestamp: dataTimestamp, minutes: min, seconds: sec, timerPlay: dataTimerPlay, timeOnData } = props
+  const { label, id, checked, onChecked, onDelTasks, timestamp: dataTimestamp, minutes: min, seconds: sec } = props
   const [timestamp, setTimestamp] = useState(formatDistanceToNow(Date.now(), { includeSeconds: true }))
-  let [minutes, setMinutes] = useState(min)
-  let [seconds, setSeconds] = useState(sec)
-  const [timerPlay, setTimerPlay] = useState(dataTimerPlay)
+  const [minutes, setMinutes] = useState(min)
+  const [seconds, setSeconds] = useState(sec)
+  const [intervalId, setIntervalId] = useState()
+  let timeOut = 1000
+  let timerInterval;
+
+  if (checked) clearInterval(intervalId);
 
   useEffect(() => {
-
     setMinutes(min)
     setSeconds(sec)
-    setTimerPlay(dataTimerPlay)
-    timerPlay && timer('continue')
-    let timeOut
     const interval = setInterval(() => {
       setTimestamp(formatDistanceToNow(dataTimestamp, { includeSeconds: true }))
-      const timerInterval = Math.floor((Date.now() - timestamp) / 1000);
-      switch (timerInterval) {
-        case timerInterval > 60:
+      const createInterval = Math.floor((Date.now() - timestamp) / 1000);
+      switch (createInterval) {
+        case createInterval > 60:
           timeOut = 1000 * 60; // 1 минута
           break;
-        case timerInterval > 2700:
+        case createInterval > 2700:
           timeOut = 1000 * 60 * 45; // меньше часа назад
           break;
-        case timerInterval > 86_400:
+        case createInterval > 86_400:
           timeOut = 1000 * 60 * 60 * 24; // 1 день
           break;
         default:
@@ -36,50 +36,30 @@ const Task = props => {
     }, timeOut);
     return () => {
       clearInterval(interval);
-      timeOnData(minutes, seconds, id, true);
+      clearInterval(intervalId);
     }
   }, [])
 
   const timer = (event) => {
+    clearInterval(intervalId)
     let time = (+minutes * 60 + +seconds)
-    if (!event) return
-    if ((event === 'continue' || event.target.name === 'play') && !checked && time !== 0) {
-      setTimerPlay(true)
-      Task.timerInterval = setInterval(() => {
+    if (event?.target?.name === 'play' && !checked && time > 0) {
+      timerInterval = setInterval(() => {
         time--
-        minutes = Math.floor(time / 60)
-        seconds = Math.floor(time % 60)
-        seconds < 10 && (seconds = `0${seconds}`)
-        minutes < 10 && (minutes = `0${minutes}`)
-        setMinutes(minutes)
-        setSeconds(seconds)
-        if (time === 0) {
-          clearInterval(Task.timerInterval)
-          setTimerPlay(true)
-          return timeOnData(minutes, seconds, id, false);
-        }
+        let timerMin = Math.floor(time / 60)
+        let timerSec = Math.floor(time % 60)
+        timerSec < 10 && (timerSec = `0${timerSec}`)
+        timerMin < 10 && (timerMin = `0${timerMin}`)
+        setMinutes(timerMin)
+        setSeconds(timerSec)
+        if (time === 0) return clearInterval(timerInterval)
       }, 1000)
-    } else {
-      clearInterval(Task.timerInterval)
-      setTimerPlay(false)
-      return timeOnData(minutes, seconds, id, false);
+      setIntervalId(timerInterval)
     }
   }
 
-
-  const delTask = () => {
-    clearInterval(Task.timerInterval)
-    onDelTasks()
-  }
-
-  let checkClass = 'view';
-  if (checked) {
-    checkClass = 'completed';
-    timer()
-  }
-
   return (
-    <li className={checkClass}>
+    <li className={checked ? 'completed' : 'view'}>
       <div className="view">
         <input id={id} className="toggle" type="checkbox" onChange={onChecked} checked={checked} />
         <label htmlFor={id}>
@@ -94,7 +74,7 @@ const Task = props => {
           <span className="description">created {timestamp} ago</span>
         </label>
         <button type="button" className="icon icon-edit" />
-        <button type="button" className="icon icon-destroy" onClick={delTask} />
+        <button type="button" className="icon icon-destroy" onClick={onDelTasks} />
       </div>
     </li>
   );

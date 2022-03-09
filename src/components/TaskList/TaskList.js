@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import Task from '../Task/Task';
 import filter from '../../utils';
 
-const TaskList = ({ tododata, onDelTasks, onChecked, timeOnData, togleClass }) => {
+const TaskList = ({ tododata, onDelTasks, onChecked, togleClass }) => {
 
   let filteretData = filter(tododata, togleClass)
 
 
   const elements = filteretData.map(item => (
     <Task
-      timeOnData={timeOnData}
       onChecked={() => onChecked(item.id)}
       onDelTasks={() => onDelTasks(item.id)}
       key={item.id} {...item}
