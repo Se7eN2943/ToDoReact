@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NewTaskForm from '../NewTaskForm/NewTaskForm';
 import TaskList from '../TaskList/TaskList';
 import Footer from '../Footer/Footer';
+import filter from '../../utils';
 
 let data = [
     { label: 'Drink coffe', id: 1, checked: false, timestamp: new Date(), minutes: '09', seconds: '59' },
@@ -47,14 +48,13 @@ const App = () => {
         <div>
             <NewTaskForm onAdd={onAdd} />
             <TaskList
-                togleClass={togleClass}
-                tododata={todoData}
+                tododata={filter(todoData, togleClass)}
                 onDelTasks={id => onDelTasks(id)}
                 onChecked={onChecked}
             />
             <Footer
                 clearComplite={clearComplite}
-                todoData={todoData}
+                tododata={filter(todoData, togleClass)}
                 todoFilter={todoFilter}
                 togleClass={togleClass}
             />

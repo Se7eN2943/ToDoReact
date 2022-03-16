@@ -1,14 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Task from '../Task/Task';
-import filter from '../../utils';
 
-const TaskList = ({ tododata, onDelTasks, onChecked, togleClass }) => {
+const TaskList = ({ tododata, onDelTasks, onChecked}) => {
 
-  let filteretData = filter(tododata, togleClass)
-
-
-  const elements = filteretData.map(item => (
+  const elements = tododata.map(item => (
     <Task
       onChecked={() => onChecked(item.id)}
       onDelTasks={() => onDelTasks(item.id)}
